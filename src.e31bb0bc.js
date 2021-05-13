@@ -194,10 +194,16 @@ module.hot.accept(reloadCSS);
 
 require("./styles.css");
 
+var refs = {
+  clockfaceDays: document.querySelector('span[data-value="days"]'),
+  clockfaceHours: document.querySelector('span[data-value="hours"]'),
+  clockfaceMins: document.querySelector('span[data-value="mins"]'),
+  clockfaceSecs: document.querySelector('span[data-value="secs"]')
+};
 var timer = {
   start: function start() {
-    var targetDate = new Date('Jul 17, 2022');
-    setInterval(function () {
+    var targetDate = new Date('May 13, 2022');
+    var intervalId = setInterval(function () {
       var currentDate = Date.now();
       var deltaTime = targetDate - currentDate;
 
@@ -205,17 +211,26 @@ var timer = {
           days = _getTimeComponents.days,
           hours = _getTimeComponents.hours,
           mins = _getTimeComponents.mins,
-          secs = _getTimeComponents.secs;
+          secs = _getTimeComponents.secs; // console.log(`${days}:${hours}:${mins}:${secs}`);
 
-      console.log("".concat(days, ":").concat(hours, ":").concat(mins, ":").concat(secs));
+
+      updateClockface({
+        days: days,
+        hours: hours,
+        mins: mins,
+        secs: secs
+      });
+
+      if (deltaTime <= 0) {
+        clearInterval(intervalId);
+        console.log('Акция окончена');
+      }
+
+      ;
     }, 1000);
   }
 };
-timer.start(); // class CountdownTimer {
-//   constructor() {
-//   }
-// }
-// new CountdownTimer({
+timer.start(); // new CountdownTimer({
 //   selector: '#timer-1',
 //   targetDate = new Date('Jul 17, 2021');
 // });
@@ -235,6 +250,17 @@ function getTimeComponents(time) {
 
 function pad(value) {
   return String(value).padStart(2, '0');
+}
+
+function updateClockface(_ref) {
+  var days = _ref.days,
+      hours = _ref.hours,
+      mins = _ref.mins,
+      secs = _ref.secs;
+  refs.clockfaceDays.textContent = "".concat(days);
+  refs.clockfaceHours.textContent = "".concat(hours);
+  refs.clockfaceMins.textContent = "".concat(mins);
+  refs.clockfaceSecs.textContent = "".concat(secs);
 }
 },{"./styles.css":"styles.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -264,7 +290,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57828" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58375" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
