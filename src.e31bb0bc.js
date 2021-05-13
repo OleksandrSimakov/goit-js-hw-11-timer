@@ -194,46 +194,74 @@ module.hot.accept(reloadCSS);
 
 require("./styles.css");
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 var refs = {
   clockfaceDays: document.querySelector('span[data-value="days"]'),
   clockfaceHours: document.querySelector('span[data-value="hours"]'),
   clockfaceMins: document.querySelector('span[data-value="mins"]'),
   clockfaceSecs: document.querySelector('span[data-value="secs"]')
 };
-var timer = {
-  start: function start() {
-    var targetDate = new Date('May 13, 2022');
-    var intervalId = setInterval(function () {
-      var currentDate = Date.now();
-      var deltaTime = targetDate - currentDate;
 
-      var _getTimeComponents = getTimeComponents(deltaTime),
-          days = _getTimeComponents.days,
-          hours = _getTimeComponents.hours,
-          mins = _getTimeComponents.mins,
-          secs = _getTimeComponents.secs; // console.log(`${days}:${hours}:${mins}:${secs}`);
+var CountdownTimer = /*#__PURE__*/function () {
+  function CountdownTimer(_ref) {
+    var onTick = _ref.onTick;
 
+    _classCallCheck(this, CountdownTimer);
 
-      updateClockface({
-        days: days,
-        hours: hours,
-        mins: mins,
-        secs: secs
-      });
-
-      if (deltaTime <= 0) {
-        clearInterval(intervalId);
-        console.log('Акция окончена');
-      }
-
-      ;
-    }, 1000);
+    this.onTick = onTick;
   }
-};
-timer.start(); // new CountdownTimer({
-//   selector: '#timer-1',
-//   targetDate = new Date('Jul 17, 2021');
-// });
+
+  _createClass(CountdownTimer, [{
+    key: "start",
+    value: function start() {
+      var _this = this;
+
+      var targetDate = new Date('May 13, 2022');
+      var intervalId = setInterval(function () {
+        var currentDate = Date.now();
+        var deltaTime = targetDate - currentDate;
+        var time = getTimeComponents(deltaTime); // updateClockface(time);
+
+        _this.onTick(time);
+
+        if (deltaTime <= 0) {
+          clearInterval(intervalId);
+          console.log('Акция окончена');
+        }
+
+        ;
+      }, 1000);
+    }
+  }]);
+
+  return CountdownTimer;
+}(); // const timer = {
+//   start() {
+//     const targetDate = new Date('May 13, 2022');
+//     const intervalId = setInterval(() => {
+//       const currentDate = Date.now();
+//       const deltaTime = targetDate - currentDate;
+//       const time = getTimeComponents(deltaTime);
+//       // console.log(`${days}:${hours}:${mins}:${secs}`);
+//       updateClockface(time);
+//       if (deltaTime <= 0) {
+//         clearInterval(intervalId);
+//         console.log('Акция окончена')
+// };
+//     }, 1000);
+//   }
+// }
+
+
+var timer = new CountdownTimer({
+  onTick: updateClockface
+});
+timer.start();
 
 function getTimeComponents(time) {
   var days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
@@ -252,11 +280,11 @@ function pad(value) {
   return String(value).padStart(2, '0');
 }
 
-function updateClockface(_ref) {
-  var days = _ref.days,
-      hours = _ref.hours,
-      mins = _ref.mins,
-      secs = _ref.secs;
+function updateClockface(_ref2) {
+  var days = _ref2.days,
+      hours = _ref2.hours,
+      mins = _ref2.mins,
+      secs = _ref2.secs;
   refs.clockfaceDays.textContent = "".concat(days);
   refs.clockfaceHours.textContent = "".concat(hours);
   refs.clockfaceMins.textContent = "".concat(mins);
@@ -290,7 +318,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58375" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53714" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
