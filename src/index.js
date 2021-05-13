@@ -7,15 +7,19 @@ const refs = {
   clockfaceSecs: document.querySelector('span[data-value="secs"]'),
 }
 
-const timer = {
-  start() {
+class CountdownTimer {
+  constructor({ onTick }) {
+    this.onTick = onTick;
+  }
+
+    start() {
     const targetDate = new Date('May 13, 2022');
     const intervalId = setInterval(() => {
       const currentDate = Date.now();
       const deltaTime = targetDate - currentDate;
-      const {days, hours, mins, secs} = getTimeComponents(deltaTime);
-      // console.log(`${days}:${hours}:${mins}:${secs}`);
-      updateClockface({days, hours, mins, secs});
+      const time = getTimeComponents(deltaTime);
+      // updateClockface(time);
+      this.onTick(time);
       if (deltaTime <= 0) {
         clearInterval(intervalId);
         console.log('Акция окончена')
@@ -24,12 +28,28 @@ const timer = {
   }
 }
 
-timer.start()
+// const timer = {
+//   start() {
+//     const targetDate = new Date('May 13, 2022');
+//     const intervalId = setInterval(() => {
+//       const currentDate = Date.now();
+//       const deltaTime = targetDate - currentDate;
+//       const time = getTimeComponents(deltaTime);
+//       // console.log(`${days}:${hours}:${mins}:${secs}`);
+//       updateClockface(time);
+//       if (deltaTime <= 0) {
+//         clearInterval(intervalId);
+//         console.log('Акция окончена')
+// };
+//     }, 1000);
+//   }
+// }
 
-// new CountdownTimer({
-//   selector: '#timer-1',
-//   targetDate = new Date('Jul 17, 2021');
-// });
+const timer = new CountdownTimer({
+  onTick: updateClockface,
+});
+
+timer.start()
 
 function getTimeComponents(time) {
   const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
